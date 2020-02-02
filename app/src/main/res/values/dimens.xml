@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="logo_img_width">100dp</dimen>
+    <dimen name="logo_img_height">100dp</dimen>
+    <dimen name="logo_text_margin_top">20dp</dimen>
+    <dimen name="splash_app_text">20sp</dimen>
+    <dimen name="_4dp">4dp</dimen>
+    <dimen name="_8dp">8dp</dimen>
+</resources>

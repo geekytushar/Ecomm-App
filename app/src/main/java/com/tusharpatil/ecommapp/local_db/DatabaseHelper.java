@@ -54,30 +54,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(category.getId())});
     }
 
-    public Category getCategory(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(CategoriesDB.TABLE_NAME,
-                new String[]{CategoriesDB.COLUMN_ID, CategoriesDB.COLUMN_NAME, CategoriesDB.COLUMN_PARENT_CATEGORY},
-                CategoriesDB.COLUMN_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
-
-        if (cursor != null)
-            cursor.moveToFirst();
-        Category category = new Category(
-                cursor.getInt(cursor.getColumnIndex(CategoriesDB.COLUMN_ID)),
-                cursor.getString(cursor.getColumnIndex(CategoriesDB.COLUMN_NAME)),
-                cursor.getInt(cursor.getColumnIndex(CategoriesDB.COLUMN_PARENT_CATEGORY)));
-
-        // close the db connection
-        cursor.close();
-
-        return category;
-    }
-
     public List<Category> getAllCategories() {
         List<Category> categories = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + CategoriesDB.TABLE_NAME;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Category category = new Category();
+                category.setId(cursor.getInt(cursor.getColumnIndex(CategoriesDB.COLUMN_ID)));
+                category.setName(cursor.getString(cursor.getColumnIndex(CategoriesDB.COLUMN_NAME)));
+                category.setParentCategory(cursor.getInt(cursor.getColumnIndex(CategoriesDB.COLUMN_PARENT_CATEGORY)));
+                categories.add(category);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        return categories;
+    }
+
+    public List<Category> getCategory(int categoryId) {
+        List<Category> categories = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + CategoriesDB.TABLE_NAME + " WHERE " + CategoriesDB.COLUMN_PARENT_CATEGORY + "='" + categoryId + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -115,9 +112,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<Product> getAllProducts() {
+    public List<Product> getProducts(int categoryId) {
         List<Product> products = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM " + ProductsDB.TABLE_NAME;
+        String selectQuery = "SELECT  * FROM " + ProductsDB.TABLE_NAME + " WHERE " + ProductsDB.COLUMN_CATEGORY_ID + "='" + categoryId + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
