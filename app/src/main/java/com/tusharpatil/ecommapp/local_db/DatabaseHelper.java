@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.tusharpatil.ecommapp.models.categories.Category;
 import com.tusharpatil.ecommapp.models.categories.Product;
@@ -113,6 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Product> getProducts(int categoryId) {
+        Log.d("TAGG99", "categoryId: " + categoryId);
         List<Product> products = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + ProductsDB.TABLE_NAME + " WHERE " + ProductsDB.COLUMN_CATEGORY_ID + "='" + categoryId + "'";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -133,6 +135,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         db.close();
+        Log.d("TAGG99", "products: " + products.size());
         return products;
     }
 

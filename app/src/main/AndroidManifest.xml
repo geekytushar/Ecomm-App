@@ -23,5 +23,7 @@
         </activity>
 
         <activity android:name=".activities.product.ProductsActivity" />
+
+        <activity android:name=".activities.product.ProductsActivity" />
     </application>
 </manifest>
