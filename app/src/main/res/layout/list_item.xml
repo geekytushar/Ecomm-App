@@ -28,7 +28,6 @@
                 android:layout_marginStart="@dimen/_8dp"
                 android:layout_marginBottom="8dp"
                 android:padding="@dimen/_8dp"
-                android:text="Title"
                 android:textColor="@color/colorIcons" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

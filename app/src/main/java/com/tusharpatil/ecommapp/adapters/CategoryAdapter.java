@@ -1,6 +1,7 @@
 package com.tusharpatil.ecommapp.adapters;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,13 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import butterknife.BindView;
 import com.tusharpatil.ecommapp.R;
 import com.tusharpatil.ecommapp.activities.category.CategoryActivity;
 import com.tusharpatil.ecommapp.activities.product.ProductsActivity;
 import com.tusharpatil.ecommapp.local_db.DatabaseHelper;
 import com.tusharpatil.ecommapp.models.categories.Category;
+import com.tusharpatil.ecommapp.utils.Config;
 
 import java.util.List;
 
@@ -39,13 +42,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
-                return new ViewHolder(
-                        LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false));
+                return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false));
             case VIEW_TYPE_EMPTY:
             default:
-                return new EmptyViewHolder(
-                        LayoutInflater.from(parent.getContext())
-                                .inflate(R.layout.item_empty_view, parent, false));
+                return new EmptyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empty_view, parent, false));
         }
     }
 
@@ -67,8 +67,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    public void addItems(List<Category> sportList) {
-        categories.addAll(sportList);
+    public void addItems(List<Category> categories) {
+        this.categories.addAll(categories);
         notifyDataSetChanged();
     }
 
@@ -99,8 +99,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                         intent = new Intent(itemView.getContext(), CategoryActivity.class);
                     else
                         intent = new Intent(itemView.getContext(), ProductsActivity.class);
-                    intent.putExtra("category_id", categories.get(position).getId());
-                    intent.putExtra("category_name", categories.get(position).getName());
+                    intent.putExtra(Config.CATEGORY_ID_KEY, categories.get(position).getId());
+                    intent.putExtra(Config.CATEGORY_NAME_KEY, categories.get(position).getName());
                     itemView.getContext().startActivity(intent);
                 }
             });
@@ -108,6 +108,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     public class EmptyViewHolder extends BaseViewHolder {
+        @BindView(R.id.buttonRetry)
         TextView buttonRetry;
 
         EmptyViewHolder(View itemView) {

@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">Ecomm App</string>
     <string name="splash_app_name">Destek Ecomm App</string>
+    <string name="categories">Categories</string>
+    <string name="error">Something went wrong, please try again</string>
+    <string name="view_low_high">Views: Low - High</string>
+    <string name="view_high_low">Views: High - Low</string>
+    <string name="order_low_high">Orders: Low - High</string>
+    <string name="orders_high_low">Orders: High - Low</string>
+    <string name="shares_low_high">Shares: Low - High</string>
+    <string name="shares_high_low">Shares: High - Low</string>
+    <string name="latest">Latest</string>
+    <string name="oldest">Oldest</string>
+    <string name="empty">Results not found</string>
+    <string name="retry">Retry</string>
+
+
+    ");
+    menu.add(Menu.NONE, MENU_ITEM_ITEM5, Menu.NONE, "");
+    menu.add(Menu.NONE, MENU_ITEM_ITEM6, Menu.NONE, "");
+    menu.add(Menu.NONE, MENU_ITEM_ITEM7, Menu.NONE, "");
+    menu.add(Menu.NONE, MENU_ITEM_ITEM8, Menu.NONE, ""
 </resources>

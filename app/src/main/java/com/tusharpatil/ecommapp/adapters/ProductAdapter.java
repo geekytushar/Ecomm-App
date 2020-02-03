@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tusharpatil.ecommapp.R;
@@ -24,32 +23,22 @@ public class ProductAdapter extends BaseAdapter {
     }
 
     private class ViewHolder {
-        ImageView imageView;
         TextView txtTitle;
-        TextView txtDesc;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-
-        LayoutInflater mInflater = (LayoutInflater)
-                context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.product_row_layout, null);
             holder = new ViewHolder();
-            holder.txtDesc = (TextView) convertView.findViewById(R.id.desc);
             holder.txtTitle = (TextView) convertView.findViewById(R.id.title);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.icon);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
         Product product = (Product) getItem(position);
-        holder.txtDesc.setText(product.getTaxName());
         holder.txtTitle.setText(product.getName());
-//        holder.imageView.setImageResource(product.getImageId());
-
         return convertView;
     }
 

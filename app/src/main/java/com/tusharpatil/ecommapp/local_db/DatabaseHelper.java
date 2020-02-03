@@ -55,24 +55,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(category.getId())});
     }
 
-    public List<Category> getAllCategories() {
-        List<Category> categories = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM " + CategoriesDB.TABLE_NAME;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Category category = new Category();
-                category.setId(cursor.getInt(cursor.getColumnIndex(CategoriesDB.COLUMN_ID)));
-                category.setName(cursor.getString(cursor.getColumnIndex(CategoriesDB.COLUMN_NAME)));
-                category.setParentCategory(cursor.getInt(cursor.getColumnIndex(CategoriesDB.COLUMN_PARENT_CATEGORY)));
-                categories.add(category);
-            } while (cursor.moveToNext());
-        }
-        db.close();
-        return categories;
-    }
-
     public List<Category> getCategory(int categoryId) {
         List<Category> categories = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + CategoriesDB.TABLE_NAME + " WHERE " + CategoriesDB.COLUMN_PARENT_CATEGORY + "='" + categoryId + "'";
@@ -89,15 +71,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return categories;
-    }
-
-    public int getCategoriesCount() {
-        String countQuery = "SELECT  * FROM " + CategoriesDB.TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count;
     }
 
     public void insertProduct(Product product) {
@@ -134,7 +107,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         db.close();
-        Log.d("TAGG99", "products: " + products.size());
         return products;
     }
 
@@ -181,12 +153,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 product.setOrderCount(cursor.getInt(cursor.getColumnIndex(ProductsDB.COLUMN_ORDER_COUNT)));
                 product.setShares(cursor.getInt(cursor.getColumnIndex(ProductsDB.COLUMN_SHARES)));
                 product.setDateAdded(cursor.getString(cursor.getColumnIndex(ProductsDB.COLUMN_DATE_ADDED)));
-                Log.d("TAGG101", "product: " + product.toString());
                 products.add(product);
             } while (cursor.moveToNext());
         }
         db.close();
-        Log.d("TAGG99", "products: " + products.size());
         return products;
     }
 

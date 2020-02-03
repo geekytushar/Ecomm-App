@@ -1,6 +1,5 @@
 package com.tusharpatil.ecommapp.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,6 @@ public class VariantAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public VariantAdapter(List<Variant> variants) {
         this.variants = variants;
-        Log.d("TAGG66", "0=>" + variants.get(0).getPrice());
-        Log.d("TAGG66", "1=>" + variants.get(1).getPrice());
     }
 
     public void setCallback(Callback callback) {
@@ -66,8 +63,8 @@ public class VariantAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    public void addItems(List<Variant> sportList) {
-        variants.addAll(sportList);
+    public void addItems(List<Variant> variants) {
+        variants.addAll(variants);
         notifyDataSetChanged();
     }
 
@@ -76,33 +73,26 @@ public class VariantAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     public class ViewHolder extends BaseViewHolder {
-        TextView titleTextView;
+        TextView colorTextView, priceTextView, sizeTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            titleTextView = itemView.findViewById(R.id.title);
+            colorTextView = itemView.findViewById(R.id.colorTextView);
+            priceTextView = itemView.findViewById(R.id.priceTextView);
+            sizeTextView = itemView.findViewById(R.id.sizeTextView);
         }
 
         protected void clear() {
-            titleTextView.setText("");
+            colorTextView.setText("");
+            priceTextView.setText("");
+            sizeTextView.setText("");
         }
 
         public void onBind(final int position) {
             super.onBind(position);
-            titleTextView.setText(String.valueOf(variants.get(position).getPrice()));
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Intent intent = null;
-//                    if (new DatabaseHelper(itemView.getContext()).getCategory(variants.get(position).getId()).size() > 0)
-//                        intent = new Intent(itemView.getContext(), CategoryActivity.class);
-//                    else
-//                        intent = new Intent(itemView.getContext(), ProductsActivity.class);
-//                    intent.putExtra("category_id", variants.get(position).getId());
-//                    intent.putExtra("category_name", variants.get(position).getName());
-//                    itemView.getContext().startActivity(intent);
-                }
-            });
+            colorTextView.setText("Color: " + String.valueOf(variants.get(position).getPrice()));
+            priceTextView.setText("Price: ₹" + String.valueOf(variants.get(position).getPrice()));
+            sizeTextView.setText("Size: " + String.valueOf(variants.get(position).getSize()));
         }
     }
 

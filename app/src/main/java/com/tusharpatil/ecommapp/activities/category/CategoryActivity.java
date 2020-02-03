@@ -3,7 +3,9 @@ package com.tusharpatil.ecommapp.activities.category;
 import android.app.ActivityManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -32,6 +34,7 @@ import com.tusharpatil.ecommapp.models.categories.Product;
 import com.tusharpatil.ecommapp.models.categories.Products;
 import com.tusharpatil.ecommapp.models.categories.Variant;
 import com.tusharpatil.ecommapp.models.categories.Variants;
+import com.tusharpatil.ecommapp.utils.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,20 +49,19 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_category);
 
         db = new DatabaseHelper(this);
-        categoryId = getIntent().getIntExtra("category_id", 0);
-        title = getIntent().getStringExtra("category_name");
+        categoryId = getIntent().getIntExtra(Config.CATEGORY_ID_KEY, 0);
+        title = getIntent().getStringExtra(Config.CATEGORY_NAME_KEY);
 
         init();
     }
 
     private void init() {
         LinearLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView = findViewById(R.id.mRecyclerView);
+        recyclerView = findViewById(R.id.category_recycler_view);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         Drawable dividerDrawable = ContextCompat.getDrawable(this, R.drawable.divider_drawable);
@@ -70,7 +72,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
 
     private void getProductData() {
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
-        StringRequest strReq = new StringRequest(Request.Method.GET, BuildConfig.BASE_URL + "/api/jsonBlob/7a640a9d-443a-11ea-9fc2-d347e19004ba", new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.GET, BuildConfig.BASE_URL + Config.API_ENDPOINT_KEY, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -101,6 +103,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
             @Override
             public void onErrorResponse(VolleyError error) {
                 showCategories(0);
+                Toast.makeText(CategoryActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
             }
         });
         mRequestQueue.add(strReq);
@@ -113,14 +116,14 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
 
     @Override
     public void onEmptyViewRetryClick() {
-
+        getProductData();
     }
 
     private void checkStack() {
         ActivityManager mngr = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> taskList = mngr.getRunningTasks(10);
         if (taskList.get(0).numActivities == 1 && taskList.get(0).topActivity.getClassName().equals(this.getClass().getName())) {
-            getSupportActionBar().setTitle("Categories");
+            getSupportActionBar().setTitle(getResources().getString(R.string.categories));
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setHomeButtonEnabled(false);
             getProductData();
