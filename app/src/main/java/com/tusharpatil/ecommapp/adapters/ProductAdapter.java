@@ -15,8 +15,8 @@ import com.tusharpatil.ecommapp.models.categories.Product;
 import java.util.List;
 
 public class ProductAdapter extends BaseAdapter {
-    Context context;
-    List<Product> products;
+    private Context context;
+    private List<Product> products;
 
     public ProductAdapter(Context context, List<Product> products) {
         this.context = context;

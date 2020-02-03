@@ -151,9 +151,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<Variant> getAllVariants() {
+    public List<Variant> getAllVariants(int productId) {
         List<Variant> variants = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM " + VariantsDB.TABLE_NAME;
+        String selectQuery = "SELECT  * FROM " + VariantsDB.TABLE_NAME + " WHERE " + VariantsDB.COLUMN_PRODUCT_ID + "='" + productId + "'";
+        ;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {

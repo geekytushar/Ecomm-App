@@ -24,6 +24,6 @@
 
         <activity android:name=".activities.product.ProductsActivity" />
 
-        <activity android:name=".activities.product.ProductsActivity" />
+        <activity android:name=".activities.product_details.ProductDetailsActivity" />
     </application>
 </manifest>

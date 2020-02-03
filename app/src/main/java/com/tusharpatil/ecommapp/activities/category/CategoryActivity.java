@@ -56,6 +56,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
 
     private void init() {
         LinearLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView = findViewById(R.id.mRecyclerView);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -98,7 +99,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryAdapt
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                showCategories(0);
             }
         });
         mRequestQueue.add(strReq);
