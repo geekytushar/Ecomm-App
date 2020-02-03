@@ -2,6 +2,7 @@ package com.tusharpatil.ecommapp.activities.product_details;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -71,5 +72,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(dividerDrawable));
         variantAdapter = new VariantAdapter(db.getAllVariants(productId));
         recyclerView.setAdapter(variantAdapter);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

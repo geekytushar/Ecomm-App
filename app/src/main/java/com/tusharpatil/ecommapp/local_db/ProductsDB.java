@@ -26,7 +26,7 @@ public class ProductsDB {
                     + COLUMN_VIEW_COUNT + " INTEGER DEFAULT 0,"
                     + COLUMN_ORDER_COUNT + " INTEGER DEFAULT 0,"
                     + COLUMN_SHARES + " INTEGER DEFAULT 0,"
-                    + COLUMN_DATE_ADDED + " TEXT"
+                    + COLUMN_DATE_ADDED + " DATETIME"
                     + ")";
 
     public ProductsDB() {

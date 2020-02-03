@@ -108,13 +108,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(ProductsDB.COLUMN_TAX_NAME, product.getTaxName());
         values.put(ProductsDB.COLUMN_TAX_VALUE, product.getTaxValue());
         values.put(ProductsDB.COLUMN_CATEGORY_ID, product.getCategoryId());
-        values.put(ProductsDB.COLUMN_DATE_ADDED, product.getDateAdded());
+        values.put(ProductsDB.COLUMN_DATE_ADDED, product.getDateAdded().substring(0, 19).replace("T", " "));
         db.insert(ProductsDB.TABLE_NAME, null, values);
         db.close();
     }
 
     public List<Product> getProducts(int categoryId) {
-        Log.d("TAGG99", "categoryId: " + categoryId);
         List<Product> products = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + ProductsDB.TABLE_NAME + " WHERE " + ProductsDB.COLUMN_CATEGORY_ID + "='" + categoryId + "'";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -131,6 +130,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 product.setOrderCount(cursor.getInt(cursor.getColumnIndex(ProductsDB.COLUMN_ORDER_COUNT)));
                 product.setShares(cursor.getInt(cursor.getColumnIndex(ProductsDB.COLUMN_SHARES)));
                 product.setDateAdded(cursor.getString(cursor.getColumnIndex(ProductsDB.COLUMN_DATE_ADDED)));
+                products.add(product);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        Log.d("TAGG99", "products: " + products.size());
+        return products;
+    }
+
+    public List<Product> getSortedProducts(int categoryId, int type) {
+        List<Product> products = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + ProductsDB.TABLE_NAME + " WHERE " + ProductsDB.COLUMN_CATEGORY_ID + "='" + categoryId + "'";
+        switch (type) {
+            case 1:
+                selectQuery = selectQuery.concat(" ORDER BY " + ProductsDB.COLUMN_VIEW_COUNT + " ASC");
+                break;
+            case 2:
+                selectQuery = selectQuery.concat(" ORDER BY " + ProductsDB.COLUMN_VIEW_COUNT + " DESC");
+                break;
+            case 3:
+                selectQuery = selectQuery.concat(" ORDER BY " + ProductsDB.COLUMN_ORDER_COUNT + " ASC");
+                break;
+            case 4:
+                selectQuery = selectQuery.concat(" ORDER BY " + ProductsDB.COLUMN_ORDER_COUNT + " DESC");
+                break;
+            case 5:
+                selectQuery = selectQuery.concat(" ORDER BY " + ProductsDB.COLUMN_SHARES + " ASC");
+                break;
+            case 6:
+                selectQuery = selectQuery.concat(" ORDER BY " + ProductsDB.COLUMN_SHARES + " DESC");
+                break;
+            case 7:
+                selectQuery = selectQuery.concat(" ORDER BY " + ProductsDB.COLUMN_DATE_ADDED + " DESC");
+                break;
+            case 8:
+                selectQuery = selectQuery.concat(" ORDER BY " + ProductsDB.COLUMN_DATE_ADDED + " ASC");
+                break;
+        }
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Product product = new Product();
+                product.setId(cursor.getInt(cursor.getColumnIndex(ProductsDB.COLUMN_ID)));
+                product.setName(cursor.getString(cursor.getColumnIndex(ProductsDB.COLUMN_NAME)));
+                product.setTaxName(cursor.getString(cursor.getColumnIndex(ProductsDB.COLUMN_TAX_NAME)));
+                product.setTaxValue(cursor.getString(cursor.getColumnIndex(ProductsDB.COLUMN_TAX_VALUE)));
+                product.setCategoryId(cursor.getInt(cursor.getColumnIndex(ProductsDB.COLUMN_CATEGORY_ID)));
+                product.setViewCount(cursor.getInt(cursor.getColumnIndex(ProductsDB.COLUMN_VIEW_COUNT)));
+                product.setOrderCount(cursor.getInt(cursor.getColumnIndex(ProductsDB.COLUMN_ORDER_COUNT)));
+                product.setShares(cursor.getInt(cursor.getColumnIndex(ProductsDB.COLUMN_SHARES)));
+                product.setDateAdded(cursor.getString(cursor.getColumnIndex(ProductsDB.COLUMN_DATE_ADDED)));
+                Log.d("TAGG101", "product: " + product.toString());
                 products.add(product);
             } while (cursor.moveToNext());
         }

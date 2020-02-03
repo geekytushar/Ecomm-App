@@ -2,6 +2,8 @@ package com.tusharpatil.ecommapp.activities.product;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,15 +23,24 @@ import java.util.List;
 public class ProductsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private DatabaseHelper db;
     private ListView listView;
+    private int categoryId;
     private ProductAdapter productAdapter;
     private List<Product> products;
+    private static final int MENU_ITEM_ITEM1 = 1;
+    private static final int MENU_ITEM_ITEM2 = 2;
+    private static final int MENU_ITEM_ITEM3 = 3;
+    private static final int MENU_ITEM_ITEM4 = 4;
+    private static final int MENU_ITEM_ITEM5 = 5;
+    private static final int MENU_ITEM_ITEM6 = 6;
+    private static final int MENU_ITEM_ITEM7 = 7;
+    private static final int MENU_ITEM_ITEM8 = 8;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
 
-        int categoryId = getIntent().getIntExtra("category_id", 0);
+        categoryId = getIntent().getIntExtra("category_id", 0);
         String categoryName = getIntent().getStringExtra("category_name");
         getSupportActionBar().setTitle(categoryName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -46,10 +57,36 @@ public class ProductsActivity extends AppCompatActivity implements AdapterView.O
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(Menu.NONE, MENU_ITEM_ITEM1, Menu.NONE, "Views: Low - High");
+        menu.add(Menu.NONE, MENU_ITEM_ITEM2, Menu.NONE, "Views: High - Low");
+        menu.add(Menu.NONE, MENU_ITEM_ITEM3, Menu.NONE, "Orders: Low - High");
+        menu.add(Menu.NONE, MENU_ITEM_ITEM4, Menu.NONE, "Orders: High - Low");
+        menu.add(Menu.NONE, MENU_ITEM_ITEM5, Menu.NONE, "Shares: Low - High");
+        menu.add(Menu.NONE, MENU_ITEM_ITEM6, Menu.NONE, "Shares: High - Low");
+        menu.add(Menu.NONE, MENU_ITEM_ITEM7, Menu.NONE, "Latest");
+        menu.add(Menu.NONE, MENU_ITEM_ITEM8, Menu.NONE, "Oldest");
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
+                return true;
+            case MENU_ITEM_ITEM1:
+            case MENU_ITEM_ITEM2:
+            case MENU_ITEM_ITEM3:
+            case MENU_ITEM_ITEM4:
+            case MENU_ITEM_ITEM5:
+            case MENU_ITEM_ITEM6:
+            case MENU_ITEM_ITEM7:
+            case MENU_ITEM_ITEM8:
+                products.clear();
+                products.addAll(db.getSortedProducts(categoryId, item.getItemId()));
+                Log.d("TAGG101", "products: " + products.size());
+                productAdapter.notifyDataSetChanged();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
